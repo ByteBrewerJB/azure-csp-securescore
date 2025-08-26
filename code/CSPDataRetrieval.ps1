@@ -24,7 +24,18 @@ function Install-RequiredModules {
                 Install-Module -Name $module.ModuleName -RequiredVersion $module.RequiredVersion -Scope CurrentUser -Repository 'psgallery' -Force -AllowClobber -Verbose:$false
             }
             Write-Verbose " > Importing the module [$($module.ModuleName)] with version [$($module.RequiredVersion)].."
-            Import-Module -Name $module.ModuleName -RequiredVersion $module.RequiredVersion -Verbose:$false
+            $LoadedModule = Get-Module -Name $module.ModuleName -Verbose:$false | Where-Object { $_.Version.ToString() -eq $module.RequiredVersion }
+            if ($LoadedModule) {
+                Write-Verbose " > Module [$($module.ModuleName)] with required version already imported."
+            }
+            else {
+                $OtherVersion = Get-Module -Name $module.ModuleName -Verbose:$false
+                if ($OtherVersion) {
+                    Write-Verbose " > A different version of module [$($module.ModuleName)] is loaded. Removing before import.."
+                    Remove-Module -Name $module.ModuleName -Force -Verbose:$false
+                }
+                Import-Module -Name $module.ModuleName -RequiredVersion $module.RequiredVersion -Verbose:$false
+            }
         }
         catch {
             throw "An issue occured during the session module prerequisite phase for module [$($module.ModuleName)] with version [$($module.RequiredVersion)]. We recommend to execute the process again in a new session. If the issue persists please contact the maintainer. The retrieved error was: $_"
