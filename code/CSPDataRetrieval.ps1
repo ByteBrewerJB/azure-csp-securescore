@@ -63,7 +63,7 @@ function Start-CSPSecureScorePrerequisitesProcess {
 
     #region Azure graph connection
     Write-Host "`n>> Azure graph connection <<" -ForegroundColor Cyan
-    $CSPApplicationDisplayName = 'DexMach CSP Secure Score dashboard'
+    $CSPApplicationDisplayName = 'Cegeka CSP Secure Score dashboard'
     do {
         $TenantId = (Read-Host -Prompt "Provide the tenant id of your Azure tenant in which you want to create the multi-tenant application").TrimEnd().TrimStart()
         if (-not $TenantId) {
@@ -272,7 +272,7 @@ function Start-CSPSecureScoreDataProcess {
                     }
                 )
                 ApplicationId     = $using:CSP_Partner_SpnId
-                DisplayName       = 'DexMach CSP Secure Score dashboard'
+                DisplayName       = 'Cegeka CSP Secure Score dashboard'
             }
             $Uri = "https://api.partnercenter.microsoft.com/v1/customers/$($_.CustomerId)/applicationconsents"
             $null = Invoke-RestMethod -Method 'Post' -Uri $Uri -Body ($Body | ConvertTo-Json) -Authentication 'Bearer' -Token (ConvertTo-SecureString -AsPlainText -Force -String $using:CSPToken.access_token) -ContentType 'application/json' -ErrorAction 'Stop'
@@ -704,13 +704,13 @@ q - Quit the process
 
 #region Menu functionality and execution
 $Banner = @"
- ____            __  __            _
-|  _ \  _____  _|  \/  | __ _  ___| |__
-| | | |/ _ \ \/ / |\/| |/ _`` |/ __| '_ \
-| |_| |  __/>  <| |  | | (_| | (__| | | |
-|____/ \___/_/\_\_|  |_|\__,_|\___|_| |_|
+  ____   _____    ____   _____   _  __     _  
+ / ___| | ____|  / ___| | ____| | |/ /    / \ 
+| |     |  _|    | |  _  |  _|  | ' /    / _ \
+| |___  | |___   | |_| | | |___ | . \   / ___ \
+ \____| |_____|   \____| |_____| |_|\_\ /_/   \_\
 
-Welcome to the DexMach CSP secure score data retrieval project!
+Welcome to the Cegeka CSP secure score data retrieval project!
 "@
 
 if ($PSVersionTable.PSVersion.Major -lt 7) {

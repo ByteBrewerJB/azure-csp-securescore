@@ -19,6 +19,6 @@ It will install 2 modules:
 
 **3. An application will be created**
 
-- It will create an application called "DexMach CSP Secure Score dashboard", it also checks if it exists already, with access to Microsoft Azure Management and Microsoft Partner API's.
+- It will create an application called "Cegeka CSP Secure Score dashboard", it also checks if it exists already, with access to Microsoft Azure Management and Microsoft Partner API's.
 
 4. At the end of this part an app will be created that can be used in the data retrieval flow, in order to do so please create an application secret in the Azure Portal and consent to the API permissions. For more information on how to do this [see](https://learn.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).
