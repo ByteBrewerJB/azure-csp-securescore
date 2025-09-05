@@ -493,6 +493,24 @@ function Start-CSPSecureScoreDataUpload {
     #endregion
 
     #region Storage account processes
+    function Get-ValidatedStorageAccountName {
+        do {
+            $StorageAccountName = (Read-Host -Prompt "Provide the name of the storage account that you wish to create. It must be between 3 and 24 characters and only contain lowercase letters and numbers.").TrimEnd().TrimStart()
+            if (-not $StorageAccountName) {
+                Write-Host "No input was provided. Please try again."
+            }
+            elseif ($StorageAccountName.Length -gt 24 -or $StorageAccountName.Length -lt 3) {
+                Write-Host "Input was invalid. The name must be between 3 and 24 characters long. Please try again with another name."
+                $StorageAccountName = $null
+            }
+            elseif ($StorageAccountName -notmatch '^[a-z0-9]+$') {
+                Write-Host "Input was invalid. The name can only contain lowercase letters and numbers. Please try again with another name."
+                $StorageAccountName = $null
+            }
+        }
+        while (-not $StorageAccountName)
+        return $StorageAccountName
+    }
     function Start-StorageAccountDefaultProcess {
         #region Azure connection
         Write-Host "`n>> Azure connection <<" -ForegroundColor Cyan
@@ -527,17 +545,7 @@ function Start-CSPSecureScoreDataUpload {
             }
         }
         while (-not $ResourceGroupName)
-        do {
-            $StorageAccountName = (Read-Host -Prompt "Provide the name of the storage account that you wish to create. Maximum 24 characters are allowed").TrimEnd().TrimStart()
-            if (-not $StorageAccountName) {
-                Write-Host "No input was provided. Please try again."
-            }
-            elseif ($StorageAccountName.Length -gt 24) {
-                Write-Host "Input was invalid. More than 24 characters were provided. Please try again with another name."
-                $StorageAccountName = $null
-            }
-        }
-        while (-not $StorageAccountName)
+        $StorageAccountName = Get-ValidatedStorageAccountName
         do {
             $DataFolderPath = (Read-Host -Prompt "Provide the full folder path of the data folder from which you want to upload your data. This folder is created by the data retrieval process").TrimEnd().TrimStart()
             if (-not $DataFolderPath) {
